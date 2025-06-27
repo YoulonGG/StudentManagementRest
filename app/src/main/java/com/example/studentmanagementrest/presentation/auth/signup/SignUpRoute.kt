@@ -1,7 +1,6 @@
 package com.example.studentmanagementrest.presentation.auth.signup
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 
 /**
  * @Author: John Youlong.
@@ -12,4 +11,18 @@ import androidx.compose.ui.Modifier
 @Composable
 fun SignUpRoute() {
     SignUpScreen()
+}
+
+data class SignUpUiState(
+    val isLoading: Boolean = true
+)
+
+
+sealed interface SignUpAction {
+    data class SignUp(
+        val firstName: String,
+        val lastName: String,
+        val email: String,
+        val password: String
+    ) : SignUpAction
 }
