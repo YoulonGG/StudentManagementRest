@@ -8,4 +8,7 @@ package com.example.studentmanagementrest.data.remote.common
 
 object ApiConstant{
 
+    const val REGISTER_ADMIN = "admin/register"
+    const val LOGIN = "auth/login"
+
 }
