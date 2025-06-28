@@ -17,7 +17,8 @@ fun SignUpRoute() {
     val viewModel: SignUpViewModel = hiltViewModel()
 
     SignUpScreen(
-        uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+        uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
+        onAction = viewModel::onAction
     )
 }
 
