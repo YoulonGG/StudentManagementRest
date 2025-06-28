@@ -20,7 +20,7 @@ fun StudentManagementNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = ScreenRoute.LoginScreen
+        startDestination = ScreenRoute.SignScreen
     ) {
         composable<ScreenRoute.LoginScreen> {
             LoginRoute()

@@ -1,6 +1,9 @@
 package com.example.studentmanagementrest.presentation.auth.signup
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 /**
  * @Author: John Youlong.
@@ -10,11 +13,20 @@ import androidx.compose.runtime.Composable
 
 @Composable
 fun SignUpRoute() {
-    SignUpScreen()
+
+    val viewModel: SignUpViewModel = hiltViewModel()
+
+    SignUpScreen(
+        uiState = viewModel.uiState.collectAsStateWithLifecycle().value
+    )
 }
 
 data class SignUpUiState(
-    val isLoading: Boolean = true
+    val isLoading: Boolean = true,
+    val firstName: String = "",
+    val lastName: String = "",
+    val password: String = "",
+    val email: String = ""
 )
 
 
