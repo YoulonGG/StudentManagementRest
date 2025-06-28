@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.studentmanagementrest.core.navigation.bottom_navigation.BottomNavScreen
 import com.example.studentmanagementrest.core.navigation.util.ScreenRoute
 import com.example.studentmanagementrest.presentation.auth.login.LoginRoute
 import com.example.studentmanagementrest.presentation.auth.signup.SignUpRoute
@@ -16,6 +17,7 @@ import com.example.studentmanagementrest.presentation.auth.signup.SignUpRoute
 
 @Composable
 fun StudentManagementNavHost(
+    screenRoute: ScreenRoute,
     navController: NavHostController,
 ) {
     NavHost(
@@ -29,5 +31,10 @@ fun StudentManagementNavHost(
         composable<ScreenRoute.SignScreen> {
             SignUpRoute()
         }
+
+        composable<ScreenRoute.BottomNav> {
+            BottomNavScreen(screenRoute)
+        }
+
     }
 }

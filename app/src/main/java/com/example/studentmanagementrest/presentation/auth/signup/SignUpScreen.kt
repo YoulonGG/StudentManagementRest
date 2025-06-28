@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +26,8 @@ import com.example.studentmanagementrest.core.ui_components.CommonTextField
 
 @Composable
 fun SignUpScreen(
-    uiState: SignUpUiState
+    uiState: SignUpUiState,
+    onAction: (SignUpAction) -> Unit
 ) {
 
     var txtFirstName by remember { mutableStateOf(TextFieldValue(uiState.firstName)) }
@@ -66,6 +69,21 @@ fun SignUpScreen(
                 txtPassword = newTextFieldValue
             }
         )
+
+        Button(
+            onClick = {
+                onAction(
+                    SignUpAction.SignUp(
+                        txtFirstName.text,
+                        txtLastName.text,
+                        txtEmail.text,
+                        txtPassword.text
+                    )
+                )
+            }
+        ) {
+            Text(text = "Sign Up")
+        }
     }
 
 }
