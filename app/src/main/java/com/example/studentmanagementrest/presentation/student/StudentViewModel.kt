@@ -2,6 +2,7 @@ package com.example.studentmanagementrest.presentation.student
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 /**
  * @Author: John Youlong.
@@ -10,4 +11,4 @@ import dagger.hilt.android.lifecycle.HiltViewModel
  */
 
 @HiltViewModel
-class StudentViewModel: ViewModel()
+class StudentViewModel @Inject constructor() : ViewModel()
