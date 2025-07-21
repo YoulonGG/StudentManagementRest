@@ -1,9 +1,9 @@
 package com.example.studentmanagementrest.presentation.auth.signup
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import java.io.Serializable
 
 /**
  * @Author: John Youlong.
@@ -23,11 +23,15 @@ fun SignUpRoute() {
 }
 
 data class SignUpUiState(
-    val isLoading: Boolean = true,
+    val isLoading: Boolean = false,
     val firstName: String = "",
     val lastName: String = "",
     val password: String = "",
-    val email: String = ""
+    val email: String = "",
+    val errorMessage: String = "",
+    val isError: Boolean = false,
+    val isSuccess: Boolean = false,
+    val successMessage: String? = null
 )
 
 
@@ -38,4 +42,6 @@ sealed interface SignUpAction {
         val email: String,
         val password: String
     ) : SignUpAction
+
+    data object ClearError : SignUpAction
 }

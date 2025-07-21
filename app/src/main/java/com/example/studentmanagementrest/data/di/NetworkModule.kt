@@ -1,5 +1,6 @@
 package com.example.studentmanagementrest.data.di
 
+import com.example.studentmanagementrest.data.remote.intercepter.ErrorHandlingInterceptor
 import com.example.studentmanagementrest.data.remote.intercepter.HeaderInterceptor
 import com.example.studentmanagementrest.data.remote.util.ApiService
 import dagger.Module
@@ -26,6 +27,15 @@ object NetWorkModule {
 
     @Provides
     @Singleton
+    fun provideLoggingInterceptor(
+    ): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+    }
+
+    @Provides
+    @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService = retrofit.create(ApiService::class.java)
 
 
@@ -41,6 +51,7 @@ object NetWorkModule {
                     connectTimeout(60, TimeUnit.SECONDS)
                     addInterceptor(HeaderInterceptor())
                     addInterceptor(HttpLoggingInterceptor())
+                    addInterceptor(ErrorHandlingInterceptor())
                 }.build()
             )
             .addConverterFactory(GsonConverterFactory.create())

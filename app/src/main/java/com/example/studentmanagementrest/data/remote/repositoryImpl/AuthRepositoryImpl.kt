@@ -1,5 +1,6 @@
 package com.example.studentmanagementrest.data.remote.repositoryImpl
 
+import com.example.studentmanagementrest.data.dto.response.BaseMessageResponse
 import com.example.studentmanagementrest.data.remote.util.ApiService
 import com.example.studentmanagementrest.domain.repositories.AuthRepository
 import javax.inject.Inject
@@ -14,8 +15,12 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(private val apiService: ApiService) :
     AuthRepository {
 
-    override suspend fun signUpAdmin(request: HashMap<String, Any>) {
+    override suspend fun signUpAdmin(request: HashMap<String, Any>): BaseMessageResponse {
         return apiService.signupAdmin(request)
+    }
+
+    override suspend fun loginAdmin(request: HashMap<String, Any>): BaseMessageResponse {
+        return apiService.loginAdmin(request)
     }
 
 }
