@@ -1,5 +1,6 @@
 package com.example.studentmanagementrest.presentation.auth.signup
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.example.studentmanagementrest.core.base.BaseViewModel
 import com.example.studentmanagementrest.core.events.NotifyEvents
@@ -21,8 +22,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val signUpUseCase: SignUpUseCase
+    private val signUpUseCase: SignUpUseCase,
+    savedStateHandle: SavedStateHandle
 ) : BaseViewModel<SignUpUiState, SignUpAction>() {
+
+    private val getFirstName = savedStateHandle.get<String>("firstName") ?: ""
+    private val getLastName = savedStateHandle.get<String>("lastName") ?: ""
 
     override fun setInitialState(): SignUpUiState = SignUpUiState()
 
@@ -30,8 +35,8 @@ class SignUpViewModel @Inject constructor(
         when (event) {
             is SignUpAction.SignUp -> {
                 signupAdmin(
-                    firstName = event.firstName,
-                    lastName = event.lastName,
+                    firstName = getFirstName,
+                    lastName = getLastName,
                     email = event.email,
                     password = event.password
                 )
@@ -56,7 +61,6 @@ class SignUpViewModel @Inject constructor(
         map["last_name"] = lastName
         map["email"] = email
         map["password"] = password
-
         signUpUseCase.invoke(map)
             .flowOn(Dispatchers.IO)
             .onEach { result ->
@@ -68,13 +72,14 @@ class SignUpViewModel @Inject constructor(
                                 isError = true,
                                 isSuccess = false,
                                 successMessage = null,
-                                errorMessage = result.error?.message ?: ""
+                                errorMessage = result.error?.message
+                                    ?: "Error occurred while signing up."
                             )
                         }
                     }
 
                     is ApiResult.Loading -> {
-                        setState { copy(isLoading = true, isError = false, isSuccess = false) }
+                        setState { copy(isError = false, isSuccess = false) }
                     }
 
                     is ApiResult.Success -> {
@@ -83,10 +88,9 @@ class SignUpViewModel @Inject constructor(
                                 isLoading = false,
                                 isError = false,
                                 isSuccess = true,
-                                successMessage = result.data ?: "Sign up successful!",
+                                successMessage = result.data?.message ?: "Sign up successful!",
                             )
                         }
-                        sendEvent(NotifyEvents.Navigate(ScreenRoute.LoginScreen))
                     }
                 }
             }.launchIn(viewModelScope)

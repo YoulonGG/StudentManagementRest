@@ -1,46 +1,37 @@
-package com.example.studentmanagementrest.presentation.auth.signup
+package com.example.studentmanagementrest.presentation.auth.signup.signup_name
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 /**
  * @Author: John Youlong.
- * @Date: 6/27/25.
+ * @Date: 7/22/25.
  * @Email: johnyoulong@gmail.com.
  */
-
 @Composable
-fun SignUpRoute(
+fun SignUpNameRoute(
     navController: NavHostController
 ) {
-    val viewModel: SignUpViewModel = hiltViewModel()
-    SignUpScreen(
+    val viewModel: SignUpNameViewModel = hiltViewModel()
+    SignUpNameScreen(
         uiState = viewModel.uiState.collectAsStateWithLifecycle().value,
         onAction = viewModel::onAction,
         onNavigate = navController
     )
 }
 
-data class SignUpUiState(
+
+data class SignUpNameUiState(
     val isLoading: Boolean = false,
     val firstName: String = "",
     val lastName: String = "",
-    val password: String = "",
-    val email: String = "",
-    val errorMessage: String = "",
-    val isError: Boolean = false,
-    val isSuccess: Boolean = false,
-    val successMessage: String? = null
 )
 
 
-sealed interface SignUpAction {
-    data class SignUp(
-        val email: String,
-        val password: String
-    ) : SignUpAction
-
-    data object ClearError : SignUpAction
+sealed class SignUpNameAction {
+    data object Next : SignUpNameAction()
 }

@@ -34,16 +34,16 @@ sealed interface NotifyEvents {
         val dialogData: DialogData,
     ) : NotifyEvents
 
-//    data class ShowSingleActionDialog(
-//        val dialogData: DialogData,
-//        val screenRoute: ScreenRoute?= null,
-//        val navigateBack : Boolean = false
-//
-//    ) : NotifyEvents
+    data class ShowSingleActionDialog(
+        val dialogData: DialogData,
+        val screenRoute: ScreenRoute?= null,
+        val navigateBack : Boolean = false
 
-//    data class ShowInfoDialog(
-//        val dialogData: DialogData
-//    ) : NotifyEvents
+    ) : NotifyEvents
+
+    data class ShowInfoDialog(
+        val dialogData: DialogData
+    ) : NotifyEvents
 
     data object PopBackRoute : NotifyEvents
 
@@ -59,7 +59,7 @@ sealed interface NotifyEvents {
         val needToShowPopUp: Boolean = true
     ) : NotifyEvents
 
-    data class UnAuthorized(val msg: String) : NotifyEvents
+//    data class UnAuthorized(val msg: String) : NotifyEvents
 
     data class ShowToastMessage(val msg: String) : NotifyEvents
 
@@ -70,13 +70,13 @@ sealed interface NotifyEvents {
 //    data class NavigateToBottomNav(val bottomNavScreens: BottomMenuScreens) : NotifyEvents
 
 
-//    data class ShowError(
-//        val dialogData: DialogData,
-//        val errorCode: Int? = null,
-//        val errorStr: String? = null,
-//        val needToShowPopUp: Boolean = true,
-//        val needToNavigateBack : Boolean = false,
-//        val fromLanguage :Boolean   = false,
-//        val onClick : () -> Unit = {}
-//    ) : NotifyEvents
+    data class ShowError(
+        val dialogData: DialogData,
+        val errorCode: Int? = null,
+        val errorStr: String? = null,
+        val needToShowPopUp: Boolean = true,
+        val needToNavigateBack : Boolean = false,
+        val fromLanguage :Boolean   = false,
+        val onClick : () -> Unit = {}
+    ) : NotifyEvents
 }

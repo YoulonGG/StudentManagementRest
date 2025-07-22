@@ -15,9 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.studentmanagementrest.core.navigation.util.ScreenRoute
 import com.example.studentmanagementrest.core.ui_components.CommonButton
 import com.example.studentmanagementrest.core.ui_components.CommonTextField
-import com.example.studentmanagementrest.core.ui_components.dialogs.InfoDialog
 import com.example.studentmanagementrest.core.ui_components.dialogs.SingleActionDialog
 
 /**
@@ -30,11 +31,11 @@ import com.example.studentmanagementrest.core.ui_components.dialogs.SingleAction
 @Composable
 fun SignUpScreen(
     uiState: SignUpUiState,
+    onNavigate: NavHostController,
     onAction: (SignUpAction) -> Unit
 ) {
 
-    var txtFirstName by remember { mutableStateOf(TextFieldValue(uiState.firstName)) }
-    var txtLastName by remember { mutableStateOf(TextFieldValue(uiState.lastName)) }
+
     var txtEmail by remember { mutableStateOf(TextFieldValue(uiState.email)) }
     var txtPassword by remember { mutableStateOf(TextFieldValue(uiState.password)) }
 
@@ -50,20 +51,7 @@ fun SignUpScreen(
                     .fillMaxSize()
                     .padding(20.dp)
             ) {
-                CommonTextField(
-                    inputData = txtFirstName,
-                    onValueChanged = { newTextFieldValue ->
-                        txtFirstName = newTextFieldValue
-                    },
-                    hint = "First Name"
-                )
-                CommonTextField(
-                    inputData = txtLastName,
-                    onValueChanged = { newTextFieldValue ->
-                        txtLastName = newTextFieldValue
-                    },
-                    hint = "Last Name"
-                )
+
                 CommonTextField(
                     inputData = txtEmail,
                     onValueChanged = { newTextFieldValue ->
@@ -80,11 +68,10 @@ fun SignUpScreen(
                 )
                 CommonButton(
                     modifier = Modifier.padding(top = 20.dp),
+                    isEnabled = txtEmail.text.isNotEmpty() && txtPassword.text.isNotEmpty(),
                     onButtonClick = {
                         onAction(
                             SignUpAction.SignUp(
-                                txtFirstName.text,
-                                txtLastName.text,
                                 txtEmail.text,
                                 txtPassword.text
                             )
@@ -98,14 +85,14 @@ fun SignUpScreen(
                     title = "Success",
                     description = "${uiState.successMessage}",
                     onDismiss = {
-                        onAction(SignUpAction.ClearError)
+                        onNavigate.navigate(ScreenRoute.LoginScreen)
                     }
                 )
             }
             if (uiState.isError) {
                 SingleActionDialog(
                     title = "Error",
-                    description = "${uiState.errorMessage}",
+                    description = uiState.errorMessage,
                     onDismiss = {
                         onAction(SignUpAction.ClearError)
                     }

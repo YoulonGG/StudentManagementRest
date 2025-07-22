@@ -14,10 +14,16 @@ import kotlinx.serialization.Serializable
 sealed class ScreenRoute {
 
     @Serializable
+    data object SplashScreen: ScreenRoute()
+
+    @Serializable
     data object LoginScreen: ScreenRoute()
 
     @Serializable
-    data object SignScreen: ScreenRoute()
+    data class SignScreen(val firstName: String, val lastName: String): ScreenRoute()
+
+    @Serializable
+    data object SignUpNameScreen: ScreenRoute()
 
     @Serializable
     data object BottomNav: ScreenRoute()

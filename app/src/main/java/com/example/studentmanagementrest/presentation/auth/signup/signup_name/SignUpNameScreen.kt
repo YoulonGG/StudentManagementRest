@@ -1,13 +1,10 @@
-package com.example.studentmanagementrest.presentation.auth.login
+package com.example.studentmanagementrest.presentation.auth.signup.signup_name
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,32 +12,28 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.studentmanagementrest.core.navigation.util.ScreenRoute
-import com.example.studentmanagementrest.core.resource.hintColor
 import com.example.studentmanagementrest.core.ui_components.CommonButton
 import com.example.studentmanagementrest.core.ui_components.CommonTextField
 
 /**
  * @Author: John Youlong.
- * @Date: 6/27/25.
+ * @Date: 7/22/25.
  * @Email: johnyoulong@gmail.com.
  */
 
 @Composable
-fun LoginScreen(
-    uiState: LoginUiState,
+fun SignUpNameScreen(
+    uiState: SignUpNameUiState,
     onNavigate: NavHostController,
-    onAction: (LoginAction) -> Unit
+    onAction: (SignUpNameAction) -> Unit
 ) {
 
-    var txtEmail by remember { mutableStateOf(TextFieldValue(uiState.email)) }
-    var txtPassword by remember { mutableStateOf(TextFieldValue(uiState.password)) }
+    var txtFirstName by remember { mutableStateOf(TextFieldValue(uiState.firstName)) }
+    var txtLastName by remember { mutableStateOf(TextFieldValue(uiState.lastName)) }
 
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -54,46 +47,34 @@ fun LoginScreen(
                     .padding(20.dp)
             ) {
                 CommonTextField(
-                    inputData = txtEmail,
+                    inputData = txtFirstName,
                     onValueChanged = { newTextFieldValue ->
-                        txtEmail = newTextFieldValue
+                        txtFirstName = newTextFieldValue
                     },
-                    hint = "Email"
+                    hint = "First Name"
                 )
                 CommonTextField(
-                    inputData = txtPassword,
+                    inputData = txtLastName,
                     onValueChanged = { newTextFieldValue ->
-                        txtPassword = newTextFieldValue
+                        txtLastName = newTextFieldValue
                     },
-                    hint = "Password",
-                )
-                Text(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp)
-                        .clickable {
-                            onNavigate.navigate(ScreenRoute.SignUpNameScreen)
-                        },
-                    text = "Don't have an account? Register",
-                    textAlign = TextAlign.End,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.W400,
-                    color = hintColor
+                    hint = "Last Name"
                 )
                 CommonButton(
                     modifier = Modifier.padding(top = 20.dp),
-                    isEnabled = txtEmail.text.isNotEmpty() && txtPassword.text.isNotEmpty(),
                     onButtonClick = {
-                        onAction(
-                            LoginAction.Login(
-                                email = txtEmail.text,
-                                password = txtPassword.text
+                        onNavigate.navigate(
+                            ScreenRoute.SignScreen(
+                                txtFirstName.text,
+                                txtLastName.text
                             )
                         )
                     },
-                    text = "Login",
+                    isEnabled = txtLastName.text.isNotEmpty() && txtFirstName.text.isNotEmpty(),
+                    text = "Submit",
                 )
             }
         }
     )
 }
+

@@ -1,10 +1,13 @@
 package com.example.studentmanagementrest.domain.useCase
 
-import com.example.studentmanagementrest.data.dto.response.BaseMessageResponse
+import com.example.studentmanagementrest.data.dto.request.LoginRequest
+import com.example.studentmanagementrest.data.dto.response.LoginResponse
 import com.example.studentmanagementrest.data.remote.common.ApiResult
+import com.example.studentmanagementrest.data.remote.util.toApiResult
 import com.example.studentmanagementrest.domain.repositories.AuthRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -13,15 +16,14 @@ import javax.inject.Inject
  * @Email: johnyoulong@gmail.com.
  */
 
-class LoginUseCase @Inject constructor(private val repository: AuthRepository) {
-    operator fun invoke(hashMap: HashMap<String, Any>): Flow<ApiResult<BaseMessageResponse>> =
+class LoginUseCase @Inject constructor(private val authRepository: AuthRepository) {
+    operator fun invoke(requestData: LoginRequest): Flow<ApiResult<LoginResponse>> =
         flow {
             emit(ApiResult.Loading())
             try {
-                val request = repository.loginAdmin(hashMap)
-                emit(ApiResult.Success(request))
+                val response = authRepository.loginAdmin(requestData)
+                emit(ApiResult.Success(response))
             } catch (e: Exception) {
-
                 emit(ApiResult.Error(e))
             }
         }

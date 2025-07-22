@@ -1,6 +1,8 @@
 package com.example.studentmanagementrest.domain.repositories
 
+import com.example.studentmanagementrest.data.dto.request.LoginRequest
 import com.example.studentmanagementrest.data.dto.response.BaseMessageResponse
+import com.example.studentmanagementrest.data.dto.response.LoginResponse
 
 
 /**
@@ -10,5 +12,5 @@ import com.example.studentmanagementrest.data.dto.response.BaseMessageResponse
  */
 interface AuthRepository {
     suspend fun signUpAdmin(request: HashMap<String, Any>): BaseMessageResponse
-    suspend fun loginAdmin(request: HashMap<String, Any>): BaseMessageResponse
+    suspend fun loginAdmin(request: LoginRequest): LoginResponse
 }

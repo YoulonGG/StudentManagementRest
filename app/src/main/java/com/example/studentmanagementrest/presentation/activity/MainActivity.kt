@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.example.studentmanagementrest.core.navigation.graph.StudentManagementNavHost
 import com.example.studentmanagementrest.core.navigation.util.ScreenRoute
+import com.example.studentmanagementrest.core.provider.ScreenProviderWrapper
 import com.example.studentmanagementrest.ui.theme.StudentManagementRestTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +20,13 @@ class MainActivity : ComponentActivity() {
             val nav = rememberNavController()
             val screenRoute = ScreenRoute.BottomNav
             StudentManagementRestTheme {
-                StudentManagementNavHost(navController = nav, screenRoute = screenRoute)
+                ScreenProviderWrapper(
+                    activity = this,
+                    navController = nav,
+                    content = {
+                        StudentManagementNavHost(navController = nav, screenRoute = screenRoute)
+                    }
+                )
             }
         }
     }

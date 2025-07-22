@@ -3,6 +3,7 @@ package com.example.studentmanagementrest.core.base
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.studentmanagementrest.core.events.NotifyEvents
+import com.example.studentmanagementrest.core.ui_components.dialogs.DialogData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
@@ -48,7 +49,13 @@ abstract class BaseViewModel<UiState, UiAction>(
     }
 
     fun handleToastError(error: Throwable?) {
-
+        sendEvent(
+            NotifyEvents.ShowDialog(
+                dialogData = DialogData(
+                    title = "Error",
+                    description = error?.message ?: "An unexpected error occurred.",
+                )
+            )
+        )
     }
-
 }
