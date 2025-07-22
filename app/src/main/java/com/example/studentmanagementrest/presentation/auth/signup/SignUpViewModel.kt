@@ -1,14 +1,16 @@
 package com.example.studentmanagementrest.presentation.auth.signup
 
-import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.studentmanagementrest.domain.repositories.AuthRepository
+import com.example.studentmanagementrest.core.base.BaseViewModel
+import com.example.studentmanagementrest.core.events.NotifyEvents
+import com.example.studentmanagementrest.core.navigation.util.ScreenRoute
+import com.example.studentmanagementrest.data.remote.common.ApiResult
+import com.example.studentmanagementrest.domain.useCase.SignUpUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 /**
@@ -19,19 +21,34 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignUpViewModel @Inject constructor(
-    private val repository: AuthRepository
-) : ViewModel() {
+    private val signUpUseCase: SignUpUseCase
+) : BaseViewModel<SignUpUiState, SignUpAction>() {
 
-    fun onAction(event: SignUpAction) {
+    override fun setInitialState(): SignUpUiState = SignUpUiState()
+
+    override fun onAction(event: SignUpAction) {
         when (event) {
             is SignUpAction.SignUp -> {
-                signupAdmin(event.firstName, event.lastName, event.email, event.password)
+                signupAdmin(
+                    firstName = event.firstName,
+                    lastName = event.lastName,
+                    email = event.email,
+                    password = event.password
+                )
+            }
+
+            SignUpAction.ClearError -> {
+                setState {
+                    copy(
+                        isError = false,
+                        errorMessage = "",
+                        isSuccess = false,
+                        successMessage = null
+                    )
+                }
             }
         }
     }
-
-    private val _uiState = MutableStateFlow(SignUpUiState())
-    val uiState: StateFlow<SignUpUiState> = _uiState.asStateFlow()
 
     private fun signupAdmin(firstName: String, lastName: String, email: String, password: String) {
         val map = HashMap<String, Any>()
@@ -40,13 +57,45 @@ class SignUpViewModel @Inject constructor(
         map["email"] = email
         map["password"] = password
 
-        viewModelScope.launch {
-            try {
-                repository.signUpAdmin(map)
-            } catch (e: Exception) {
-                Log.e("", "Login Failed")
-            }
-        }
-    }
+        signUpUseCase.invoke(map)
+            .flowOn(Dispatchers.IO)
+            .onEach { result ->
+                when (result) {
+                    is ApiResult.Error -> {
+                        setState {
+                            copy(
+                                isLoading = false,
+                                isError = true,
+                                isSuccess = false,
+                                successMessage = null,
+                                errorMessage = result.error?.message ?: ""
+                            )
+                        }
+                    }
 
+                    is ApiResult.Loading -> {
+                        setState { copy(isLoading = true, isError = false, isSuccess = false) }
+                    }
+
+                    is ApiResult.Success -> {
+                        setState {
+                            copy(
+                                isLoading = false,
+                                isError = false,
+                                isSuccess = true,
+                                successMessage = result.data ?: "Sign up successful!",
+                            )
+                        }
+                        sendEvent(NotifyEvents.Navigate(ScreenRoute.LoginScreen))
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
 }
+
+
+
+
+
+
+

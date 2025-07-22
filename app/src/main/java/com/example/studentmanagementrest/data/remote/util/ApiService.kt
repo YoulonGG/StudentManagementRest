@@ -1,5 +1,6 @@
 package com.example.studentmanagementrest.data.remote.util
 
+import com.example.studentmanagementrest.data.dto.response.BaseMessageResponse
 import com.example.studentmanagementrest.data.remote.common.ApiConstant
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -12,6 +13,9 @@ import retrofit2.http.POST
 interface ApiService {
 
     @POST(ApiConstant.REGISTER_ADMIN)
-    suspend fun signupAdmin(@Body params: HashMap<String, Any>)
+    suspend fun signupAdmin(@Body params: HashMap<String, Any>): BaseMessageResponse
+
+    @POST(ApiConstant.LOGIN)
+    suspend fun loginAdmin(@Body params: HashMap<String, Any>): BaseMessageResponse
 
 }

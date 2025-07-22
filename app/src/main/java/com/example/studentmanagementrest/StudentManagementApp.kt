@@ -1,7 +1,9 @@
 package com.example.studentmanagementrest
 
 import android.app.Application
+import com.example.studentmanagementrest.core.utils.InternetUtil
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 
 /**
  * @Author: John Youlong.
@@ -10,4 +12,10 @@ import dagger.hilt.android.HiltAndroidApp
  */
 
 @HiltAndroidApp
-class StudentManagementApp : Application()
+class StudentManagementApp : Application(){
+    override fun onCreate() {
+        super.onCreate()
+        InternetUtil.init(this)
+        Timber.plant(Timber.DebugTree())
+    }
+}

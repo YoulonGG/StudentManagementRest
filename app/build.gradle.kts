@@ -5,7 +5,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
     alias(libs.plugins.kotlin.serialization)
-
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -86,4 +86,8 @@ dependencies {
     // Loading Image
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    // Timber for logging
+    implementation(libs.timber)
+
 }

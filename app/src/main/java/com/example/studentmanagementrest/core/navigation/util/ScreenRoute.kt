@@ -18,4 +18,18 @@ sealed class ScreenRoute {
 
     @Serializable
     data object SignScreen: ScreenRoute()
+
+    @Serializable
+    data object BottomNav: ScreenRoute()
+
+    @Serializable
+    data object HomeScreen: ScreenRoute()
+
+    @Serializable
+    data object StudentScreen: ScreenRoute()
+
+    @Serializable
+    data object CourseScreen: ScreenRoute()
+
+
 }
